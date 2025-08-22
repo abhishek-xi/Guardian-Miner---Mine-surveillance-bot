@@ -1,0 +1,144 @@
+#include<SoftwareSerial.h>
+SoftwareSerial Serial1(6,7);
+int PIR=3;
+int FIRE=2;
+int sw=5;
+int vib=8;
+
+
+#include<dht.h>
+#define dht_dpin 4
+dht DHT;
+float randomnumber;
+
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  Serial1.begin(9600);
+  pinMode(PIR,INPUT);
+  pinMode(FIRE,INPUT);
+  pinMode(sw,INPUT_PULLUP);
+  pinMode(vib,INPUT);
+  Serial.println("GUARDIAN MINER");
+  delay(1000);
+  
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  if(digitalRead(sw)==LOW)
+      {
+        Serial.println("EMERGENCY DETECTED");
+        Serial1.println("EMERGENCY DETECTED");
+//        randomnumber = random(1, 4);
+//        Serial.print("Distance travelled is:");
+//        Serial.println(randomnumber);
+//        Serial1.print("Distance travelled is:");
+//        Serial1.println(randomnumber);
+        delay(2000);
+      }
+      
+      if(digitalRead(PIR)==LOW)
+      {
+        Serial.println("PERSON DETECTED");
+        Serial1.println("PERSON DETECTED");
+        delay(1000);
+        
+      }
+      int fireval=digitalRead(FIRE);
+      Serial.print("Fire:");
+      Serial.println(fireval);
+      delay(500);
+        if(fireval==LOW)
+      {
+        Serial.println("FIRE DETECTED");
+        Serial1.println("FIRE DETECTED");
+       
+      }
+
+        DHT.read11(dht_dpin);
+        Serial.print("HUMIDITY:");
+        Serial.print(DHT.humidity);
+        Serial.print("%");
+        Serial.println(" ");
+        Serial1.print("HUMIDITY:");
+        Serial1.print(DHT.humidity);
+        Serial1.print("%");
+        Serial1.println(" ");
+        
+        
+        Serial.print("Temperature:");
+        Serial.print(DHT.temperature);
+        Serial.print("C");
+        Serial.println(" ");
+        Serial1.print("Temperature:");
+        Serial1.print(DHT.temperature);
+        Serial1.print("C");
+        Serial1.println(" ");
+        delay(1000);
+
+        int gas=analogRead(A0);
+        Serial.print("CO:");
+        Serial.println(gas);
+        Serial1.print("CO:");
+        Serial1.println(gas);
+          delay(700);
+        if(gas>40)
+        {
+          Serial.println("CO DETECTED");
+          Serial1.println("CO DETECTED");
+          
+      //    Serial1.println("CO DETECTED");
+          delay(1000);
+        }
+
+
+
+          int gas1=analogRead(A1);
+          Serial.print("NO2:");
+          Serial.println(gas1);
+          Serial1.print("NO2:");
+          Serial1.println(gas1);
+          delay(700);
+          if(gas1>400)
+          {
+            Serial.println("HARMFULL GASES DETECTED");
+            Serial1.println("HARMFUL GASES DETECTED");
+           
+        //    Serial1.println("NO2 DETECTED");
+            delay(1000);
+          }
+
+
+          
+
+  for(int z=0;z<5;z++)
+  {
+    if(digitalRead(vib)==HIGH)
+    {
+      
+      Serial.println("VIBRATIONS OCCURING INSIDE MINING");
+      Serial1.println("VIBRATIONS OCCURING INSIDE MINING");
+      delay(1000);
+      
+      delay(2000);
+    }
+    
+  }
+  
+
+          
+//          int vibval=digitalRead(vib);
+//          Serial.print("VIB:");
+//          Serial.println(vibval);
+//          delay(1000);
+//          if(vibval==LOW)
+//          {
+//            Serial.println("VIBRATIONS OCCURING INSIDE MINING");
+//            Serial1.println("VIBRATIONS OCCURING INSIDE MINING");
+//            delay(1000);
+//          }
+
+}
